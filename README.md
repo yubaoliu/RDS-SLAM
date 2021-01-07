@@ -11,8 +11,10 @@
 
 RDS-SLAM: Real-time Dynamic SLAM using Semantic Segmentation Methods
 
+# TUM Evaluation
+
+Please refer the folder "TUM_Evaluation"
+
 # Notes
 
-This paper is under review. 
-
-This project will be open-source later.
+We will open-source after finishing the optimization.
