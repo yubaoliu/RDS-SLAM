@@ -26,7 +26,8 @@ This repo is a simplified sample source code of RDS-SLAM. Note that it is not ex
 -   ROS melodic
 -   docker: 19.03 [optional]
 -   dock-compose: 1.26.2 [optional]
--   cuda: 10.0
+-   cuda: 10.2
+-   OpenCV 3.3.1
 
 # How to use
 
@@ -105,9 +106,13 @@ DATASET_DIR=/.../data/Dataset
 # References
 
 [1] Y. Liu and J. Miura, "RDS-SLAM: Real-Time Dynamic SLAM Using Semantic Segmentation Methods," in IEEE Access, vol. 9, pp. 23772-23785, 2021, doi: 10.1109/ACCESS.2021.3050617. [PDF](https://ieeexplore.ieee.org/document/9318990)
+
 [2] Y. Liu and J. Miura, "KMOP-vSLAM: Dynamic Visual SLAM for RGB-D Cameras using K-means and OpenPose," 2021 IEEE/SICE International Symposium on System Integration (SII), 2021, pp. 415-420, doi: 10.1109/IEEECONF49454.2021.9382724. [PDF](https://ieeexplore.ieee.org/document/9382724)
+
 [3] Badrinarayanan, Vijay, Alex Kendall, and Roberto Cipolla. "Segnet: A deep convolutional encoder-decoder architecture for image segmentation." IEEE transactions on pattern analysis and machine intelligence 39.12 (2017): 2481-2495. [PDF](https://arxiv.org/abs/1511.00561)
+
 [4] Campos, Carlos, et al. "ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual–Inertial, and Multimap SLAM." IEEE Transactions on Robotics (2021). [PDF](https://arxiv.org/pdf/2007.11898.pdf)
+
 [5] He, Kaiming, et al. "Mask r-cnn." Proceedings of the IEEE international conference on computer vision. 2017. [PDF](https://arxiv.org/pdf/1703.06870.pdf)
 
 # License

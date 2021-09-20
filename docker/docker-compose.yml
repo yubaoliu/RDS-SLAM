@@ -25,5 +25,5 @@ services:
     entrypoint: /ros_entrypoint.sh
     network_mode: host
 
-# volumes:
-    # rdsslam_root:
+volumes:
+    rdsslam_root:

@@ -1,8 +1,18 @@
 # Copyright (C) 2021, Yubao Liu, AISL, TOYOHASHI UNIVERSITY of TECHNOLOGY 
 # Email: yubao.liu.ra@tut.jp 
 
-FROM yubaoliu/root:ros-cuda10.0-cudnn7-ubuntu18.04
+FROM nvidia/cudagl:10.2-devel-ubuntu18.04
+# FROM yubaoliu/root:ros-cuda10.0-cudnn7-ubuntu18.04
 MAINTAINER yubao.liu.ra@tut.jp 
+
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+# Setup timezone
+RUN echo 'Etc/UTC' > /etc/timezone && \
+    rm -f /etc/localtime && \
+    ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
+    apt-get update && apt-get install -y tzdata
 
 RUN apt update \
     &&  apt install -f \
@@ -12,22 +22,89 @@ RUN apt update \
        caffe-cpu \
        libsnappy-dev \
        libatlas-base-dev \
+       build-essential \
        liblmdb-dev  \
        libleveldb-dev \
+       automake \
+       autotools-dev \
+       bison \
+       byacc \
+       curl \
+       git \
+       zip \
+       unzip \
+       wget \
+       python-dev \
+       python-pip \
+       python3-dev \
+       python3-pip  \
+       libeigen3-dev \
+       libboost-all-dev \
+       protobuf-compiler \
+       libprotobuf-dev \
+       libhdf5-dev \
+       libopencv-dev \
+       python3-opencv \
+       lsb-core  \
+       openssh-server  \
+       libssl-dev \
+       libevent-dev \
+       g++ \
+       gdb \
+       sudo \
    && rm -rf /var/lib/apt/lists/*
+
+# Install cmake
+RUN apt-get purge -y cmake \
+    && cd /tmp \
+    && wget -c https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1.tar.gz \
+    && tar -xzvf cmake-3.18.1.tar.gz \
+    && cd cmake-3.18.1 \
+    && ./bootstrap && make && make install \
+    && rm cmake-3.18.1 -rf 
 
 ## update pip
 RUN curl -kL https://bootstrap.pypa.io/pip/2.7/get-pip.py | python  \
     && curl -kL https://bootstrap.pypa.io/get-pip.py | python3 
- 
-## coco API
-RUN pip2 install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
-RUN pip3 install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
 
 # Install mask rcnn dependencies
 COPY requirements.txt /root/requirements.txt
 RUN  pip2 install  -r /root/requirements.txt --ignore-installed enum34
 RUN  pip3 install  -r /root/requirements.txt
+
+# Add ROS repository
+RUN /bin/bash -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && \
+# Keys for ROS repository
+    apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 && \
+# Install ROS-Base packages
+    apt-get update && apt install -f && apt-get install -y ros-melodic-desktop-full
+
+# Install ROS bootstrap tools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    python-rosdep \
+    python-rosinstall \
+    python-vcstools \
+    python-rosinstall-generator \
+    python-wstool
+
+# Set up rosdep
+RUN rosdep init
+RUN rosdep update
+
+### Create catkin workspace ###
+RUN mkdir -p /root/catkin_ws/src
+WORKDIR /root/catkin_ws
+RUN bash -c "source /opt/ros/melodic/setup.bash && \
+             catkin_make -DCMAKE_BUILD_TYPE=Release"
+
+# Load ROS environment at docker exec bash
+RUN echo "source /opt/ros/melodic/setup.bash" >> /root/.bashrc
+RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
+##############################################3
+
+## coco API
+RUN pip2 install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
+RUN pip3 install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
 
 # Download Maskrcnn modle
 RUN mkdir /root/cnnmodel \
@@ -35,22 +112,13 @@ RUN mkdir /root/cnnmodel \
     && wget -c https://github.com/matterport/Mask_RCNN/releases/download/v1.0/mask_rcnn_coco.h5 \
     && wget -c http://mi.eng.cam.ac.uk/~agk34/resources/SegNet/segnet_pascal.caffemodel 
 
-#Pangolin
-RUN git clone https://github.com/stevenlovegrove/Pangolin.git \
-    && cd Pangolin \
-    && mkdir build \
-    && cd build \
-    && cmake .. -DCMAKE_BUILD_TYPE=Debug \
-    && make -j 3 \
-    && make install
-
 # Sophus
 RUN git clone https://github.com/yubaoliu/Sophus.git \
     && cd Sophus \
     && git checkout master \
     && mkdir build \
     && cd build \
-    && cmake .. -DCMAKE_BUILD_TYPE=Debug \
+    && cmake .. -DCMAKE_BUILD_TYPE=Release \
     && make -j3 \
     && make install 
 
@@ -59,16 +127,13 @@ RUN git clone https://github.com/yubaoliu/g2o.git \
     && cd g2o \
     && mkdir build \
     && cd build \
-    && cmake .. -DCMAKE_BUILD_TYPE=Debug \
-    && make -j 3 \
-    && make install \
     && cmake .. -DCMAKE_BUILD_TYPE=Release \
     && make -j 3 \
     && make install
 
 # TUM Benchmark
-RUN cd /root \
-    && svn checkout https://svncvpr.in.tum.de/cvpr-ros-pkg/trunk/rgbd_benchmark/rgbd_benchmark_tools
+# RUN cd /root \
+#     && svn checkout https://svncvpr.in.tum.de/cvpr-ros-pkg/trunk/rgbd_benchmark/rgbd_benchmark_tools
 
 
 # caffe-segnet
@@ -78,6 +143,23 @@ RUN cd /root/ \
     && mkdir build \
     && cd build \
     && cmake .. && make install
+
+#Pangolin
+# RUN apt update && \
+#     apt install -y libgl1-mesa-dev libwayland-dev libxkbcommon-dev wayland-protocols libegl1-mesa-dev \
+#     libc++-dev libglew-dev libeigen3-dev cmake libjpeg-dev libpng-dev libavcodec-dev libavutil-dev libavformat-dev libswscale-dev libavdevice-dev \
+#     libdc1394-22-dev libraw1394-dev libopenni-dev python3-distutils \
+#     && git clone https://github.com/stevenlovegrove/Pangolin.git \
+#     && cd Pangolin \
+#     && mkdir build && cd build \
+#     && cmake .. -DCMAKE_BUILD_TYPE=Release \
+#     && make -j 3 \
+#     && make install
+
+
+# Tools
+RUN apt update && \
+    apt install -y vim tmux xterm lxterminal
 
 # # Install dependencies
 # # Newer CUDA was installed in base image, so rosdep keys of CUDA are skipped
