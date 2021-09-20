@@ -1,0 +1,6 @@
+<launch>
+    <rosparam file="$(find maskrcnn_ros)/params/param.yaml" command="load" />
+    <node pkg="maskrcnn_ros" type="action_server.py" name="maskrcnn_action_server_batch" output="screen">
+    </node>
+</launch>
+

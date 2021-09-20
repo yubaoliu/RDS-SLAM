@@ -1,0 +1,11 @@
+semantic:
+  model_name: 'segnet'       # fixed temporaly
+  dataset: 'coco' # sunrgbd
+
+segnet:
+  label_topic: "/segnet/label"
+  label_color_topic: "/segnet/label_color"
+  action_name: "/segnet_action"
+  caffemodel: /root/cnnmodel/segnet_pascal.caffemodel
+  prototxt: /root/semseg/SegNet/Example_Models/segnet_pascal.prototxt
+  lut: /root/semseg/LUT/pascal.png

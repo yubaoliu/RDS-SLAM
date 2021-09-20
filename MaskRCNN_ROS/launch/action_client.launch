@@ -1,0 +1,13 @@
+<launch>
+    <rosparam file="$(find maskrcnn_ros)/params/param.yaml" command="load" />
+    <arg name="bagfile" value="/root/Dataset/TUM/freiburg3/rgbd_dataset_freiburg3_walking_xyz.bag" />
+    <arg name="save_result" value="false" />
+    <arg name="result_dir" value="$(find maskrcnn_ros)/results" />
+
+    <node pkg="maskrcnn_ros" type="action_client" name="maskrcnn_action_client" output="screen" launch-prefix="gdb -ex run --args" >
+        <param name="bagfile_name" type="str" value="$(arg bagfile)" />
+        <param name="result_dir" type="str" value="$(arg result_dir)" />
+        <param name="save_result" type="bool" value="$(arg save_result)" />
+    </node>
+
+</launch>

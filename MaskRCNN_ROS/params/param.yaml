@@ -1,0 +1,12 @@
+camera:
+    rgb: "/camera/rgb/image_color"
+semantic:
+  semantic_label: "semantic_label"
+  semantic_label_color: "semantic_label_color"
+  action_name: "/maskrcnn_action_server"
+  model_name: 'maskrcnn'    # not used
+  # sunrgbd
+  # dataset: 'coco'
+  model_path: "/root/cnnmodel/mask_rcnn_coco.h5"
+  # sunrgbd_model_path: "/home/interns/xuan/models/pspnet_sunrgbd_best_model180625_5k.pth"
+

@@ -1,0 +1,11 @@
+<launch>
+    <rosparam file="$(find segnet_ros)/params/param.yaml" command="load" />
+    <arg name="bagfile" value="/root/Dataset/TUM/freiburg3/rgbd_dataset_freiburg3_walking_xyz.bag" />
+
+    <param name="/camera/rgb" type="str" value="/camera/rgb/image_color" />
+
+    <node pkg="segnet_ros" type="segnet_action_client" name="segent_action_client" output="screen" >
+        <param name="bagfile_name" type="str" value="$(arg bagfile)" />
+    </node>
+
+</launch>

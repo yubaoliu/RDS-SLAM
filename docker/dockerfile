@@ -1,0 +1,98 @@
+# Copyright (C) 2021, Yubao Liu, AISL, TOYOHASHI UNIVERSITY of TECHNOLOGY 
+# Email: yubao.liu.ra@tut.jp 
+
+FROM yubaoliu/root:ros-cuda10.0-cudnn7-ubuntu18.04
+MAINTAINER yubao.liu.ra@tut.jp 
+
+RUN apt update \
+    &&  apt install -f \
+    && apt install -y  libglew-dev \
+       libxkbcommon-dev \
+       libgoogle-glog-dev \
+       caffe-cpu \
+       libsnappy-dev \
+       libatlas-base-dev \
+       liblmdb-dev  \
+       libleveldb-dev \
+   && rm -rf /var/lib/apt/lists/*
+
+## update pip
+RUN curl -kL https://bootstrap.pypa.io/pip/2.7/get-pip.py | python  \
+    && curl -kL https://bootstrap.pypa.io/get-pip.py | python3 
+ 
+## coco API
+RUN pip2 install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
+RUN pip3 install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
+
+# Install mask rcnn dependencies
+COPY requirements.txt /root/requirements.txt
+RUN  pip2 install  -r /root/requirements.txt --ignore-installed enum34
+RUN  pip3 install  -r /root/requirements.txt
+
+# Download Maskrcnn modle
+RUN mkdir /root/cnnmodel \
+    && cd /root/cnnmodel \
+    && wget -c https://github.com/matterport/Mask_RCNN/releases/download/v1.0/mask_rcnn_coco.h5 \
+    && wget -c http://mi.eng.cam.ac.uk/~agk34/resources/SegNet/segnet_pascal.caffemodel 
+
+#Pangolin
+RUN git clone https://github.com/stevenlovegrove/Pangolin.git \
+    && cd Pangolin \
+    && mkdir build \
+    && cd build \
+    && cmake .. -DCMAKE_BUILD_TYPE=Debug \
+    && make -j 3 \
+    && make install
+
+# Sophus
+RUN git clone https://github.com/yubaoliu/Sophus.git \
+    && cd Sophus \
+    && git checkout master \
+    && mkdir build \
+    && cd build \
+    && cmake .. -DCMAKE_BUILD_TYPE=Debug \
+    && make -j3 \
+    && make install 
+
+# G2O
+RUN git clone https://github.com/yubaoliu/g2o.git \
+    && cd g2o \
+    && mkdir build \
+    && cd build \
+    && cmake .. -DCMAKE_BUILD_TYPE=Debug \
+    && make -j 3 \
+    && make install \
+    && cmake .. -DCMAKE_BUILD_TYPE=Release \
+    && make -j 3 \
+    && make install
+
+# TUM Benchmark
+RUN cd /root \
+    && svn checkout https://svncvpr.in.tum.de/cvpr-ros-pkg/trunk/rgbd_benchmark/rgbd_benchmark_tools
+
+
+# caffe-segnet
+RUN cd /root/ \
+    && git clone https://github.com/yubaoliu/semseg.git \
+    && cd semseg/SegNet/caffe-segnet/ \
+    && mkdir build \
+    && cd build \
+    && cmake .. && make install
+
+# # Install dependencies
+# # Newer CUDA was installed in base image, so rosdep keys of CUDA are skipped
+# RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && \
+#                   rosdep install --from-paths src -r -y --skip-keys=\"nvidia-cuda-dev nvidia-cuda\""
+#                   
+# # Build
+# RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && \
+#                   catkin_make -DCMAKE_BUILD_TYPE=Release"
+ 
+# # Load ROS environment at each run
+COPY ./ros_entrypoint.sh /
+RUN chmod 755 /ros_entrypoint.sh
+ENTRYPOINT ["/ros_entrypoint.sh"]
+
+CMD ["bash"]
+
+WORKDIR /root/catkin_ws/src

@@ -1,0 +1,29 @@
+# Copyright (C) 2021, Yubao Liu, AISL, TOYOHASHI UNIVERSITY of TECHNOLOGY 
+# Email: yubao.liu.ra@tut.jp 
+version: '2.3'
+services:
+  rdsslam:
+    image: yubaoliu/rds-slam:cuda10
+    build: .
+    # container_name: rds-slam
+    command:  lxterminal
+    runtime: nvidia
+    privileged: true
+    stdin_open: true
+    tty: true
+    environment:
+        - DISPLAY
+        - QT_X11_NO_MITSHM=1
+    volumes:
+        - /tmp/.X11-unix:/tmp/.X11-unix:rw
+        - ../SLAM:/root/catkin_ws/src/SLAM
+        - ${DATASET_DIR}:/root/Dataset
+        - ${RESULT_DIR}:/root/results
+        - ../SegNet_ROS:/root/catkin_ws/src/SegNet_ROS
+        - ../MaskRCNN_ROS:/root/catkin_ws/src/MaskRCNN_ROS
+        #- ${CNN_MODEL_DIR}:/root/cnnmodel
+    entrypoint: /ros_entrypoint.sh
+    network_mode: host
+
+# volumes:
+    # rdsslam_root:

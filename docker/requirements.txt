@@ -1,0 +1,16 @@
+setuptools>=41.0.0
+numpy>=1.15
+scipy
+Pillow
+cython
+matplotlib
+scikit-image
+tensorflow-gpu==1.13.1
+keras==2.0.8
+opencv-python==3.3.1.11
+h5py
+imageio==2.6.1
+imgaug
+IPython[all]
+pandas
+future

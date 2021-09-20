@@ -1,0 +1,15 @@
+<launch>
+    <arg name="PATH_TO_VOCABULARY" value="$(find rds_slam)/Vocabulary/ORBvoc.txt" />
+    <arg name="PATH_TO_SETTINGS_FILE" value="$(find rds_slam)/config/RGB-D/TUM3.yaml" />
+    <arg name="PATH_TO_SEQUENCE" value="/root/Dataset/TUM/freiburg3/rgbd_dataset_freiburg3_walking_xyz" />
+    <arg name="PATH_TO_ASSOCIATIONS" value="$(find rds_slam)/config/RGB-D/associations/fr3_walk_xyz.txt" />
+    <arg name="PATH_TO_RESULT" value="/root/results/rds-slam/fr3_walk_xyz_segnet" />
+
+    <node name="tum_segnet_xyz" pkg="rds_slam" type="Dynamic_RGBD" args="$(arg PATH_TO_VOCABULARY) $(arg PATH_TO_SETTINGS_FILE) $(arg PATH_TO_SEQUENCE) $(arg PATH_TO_ASSOCIATIONS) $(arg PATH_TO_RESULT)" output="screen" launch-prefix="gdb -ex run --args">
+        <param name="cnn_method" type="string" value="segnet" />
+        <param name="init_delay" type="double" value="100" />
+        <param name="frame_delay" type="double" value="100" />
+        <param name="init_frames" type="int" value="2" />
+    </node>
+
+</launch>

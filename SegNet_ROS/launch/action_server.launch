@@ -1,0 +1,11 @@
+<launch>
+    <rosparam command="load" file="$(find segnet_ros)/params/param.yaml" />
+
+    <arg name="launch_prefix" default="" />
+    <!-- <param name="use_sim_time" value="false" /> -->
+
+    <node pkg="segnet_ros" name="segnet_action_server" type="segnet_action_server" output="screen">
+    </node>
+
+</launch>
+

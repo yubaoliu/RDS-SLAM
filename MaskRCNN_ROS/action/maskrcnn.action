@@ -1,0 +1,21 @@
+# Goal definition
+int16 id
+sensor_msgs/Image image   # usually rgb image
+# sensor_msgs/Image depth
+
+---
+
+# Result definition
+uint16 id
+uint16 object_num
+# Each object has a mask
+maskrcnn_ros/objectInfo[] objects
+# label is the sum of all masks
+#sensor_msgs/Image label
+# label_color not yet used here
+#sensor_msgs/Image label_color
+# sensor_msgs/Image mask
+
+---
+# Feedback definition
+bool complete

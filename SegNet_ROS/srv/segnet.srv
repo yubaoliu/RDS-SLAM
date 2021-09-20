@@ -1,0 +1,10 @@
+int16 id
+sensor_msgs/Image  image
+
+---
+
+int16 id
+sensor_msgs/Image  label
+sensor_msgs/Image  label_color
+
+
