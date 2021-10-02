@@ -107,13 +107,15 @@ DATASET_DIR=/.../data/Dataset
 
 [1] Y. Liu and J. Miura, "RDS-SLAM: Real-Time Dynamic SLAM Using Semantic Segmentation Methods," in IEEE Access, vol. 9, pp. 23772-23785, 2021, doi: 10.1109/ACCESS.2021.3050617. [PDF](https://ieeexplore.ieee.org/document/9318990)
 
-[2] Y. Liu and J. Miura, "KMOP-vSLAM: Dynamic Visual SLAM for RGB-D Cameras using K-means and OpenPose," 2021 IEEE/SICE International Symposium on System Integration (SII), 2021, pp. 415-420, doi: 10.1109/IEEECONF49454.2021.9382724. [PDF](https://ieeexplore.ieee.org/document/9382724)
+[2] Y. Liu and J. Miura, “RDMO-SLAM: Real-Time Visual SLAM for Dynamic Environments Using Semantic Label Prediction With Optical Flow,” IEEE Access, vol. 9, pp. 106981–106997, 2021, doi: 10.1109/ACCESS.2021.3100426. [PDF](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9497091)
 
-[3] Badrinarayanan, Vijay, Alex Kendall, and Roberto Cipolla. "Segnet: A deep convolutional encoder-decoder architecture for image segmentation." IEEE transactions on pattern analysis and machine intelligence 39.12 (2017): 2481-2495. [PDF](https://arxiv.org/abs/1511.00561)
+[3] Y. Liu and J. Miura, "KMOP-vSLAM: Dynamic Visual SLAM for RGB-D Cameras using K-means and OpenPose," 2021 IEEE/SICE International Symposium on System Integration (SII), 2021, pp. 415-420, doi: 10.1109/IEEECONF49454.2021.9382724. [PDF](https://ieeexplore.ieee.org/document/9382724)
 
-[4] Campos, Carlos, et al. "ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual–Inertial, and Multimap SLAM." IEEE Transactions on Robotics (2021). [PDF](https://arxiv.org/pdf/2007.11898.pdf)
+[4] Badrinarayanan, Vijay, Alex Kendall, and Roberto Cipolla. "Segnet: A deep convolutional encoder-decoder architecture for image segmentation." IEEE transactions on pattern analysis and machine intelligence 39.12 (2017): 2481-2495. [PDF](https://arxiv.org/abs/1511.00561)
 
-[5] He, Kaiming, et al. "Mask r-cnn." Proceedings of the IEEE international conference on computer vision. 2017. [PDF](https://arxiv.org/pdf/1703.06870.pdf)
+[5] Campos, Carlos, et al. "ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual–Inertial, and Multimap SLAM." IEEE Transactions on Robotics (2021). [PDF](https://arxiv.org/pdf/2007.11898.pdf)
+
+[6] He, Kaiming, et al. "Mask r-cnn." Proceedings of the IEEE international conference on computer vision. 2017. [PDF](https://arxiv.org/pdf/1703.06870.pdf)
 
 # License
 
