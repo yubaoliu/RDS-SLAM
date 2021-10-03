@@ -5,6 +5,7 @@ FROM nvidia/cudagl:10.2-devel-ubuntu18.04
 # FROM yubaoliu/root:ros-cuda10.0-cudnn7-ubuntu18.04
 MAINTAINER yubao.liu.ra@tut.jp 
 
+
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
@@ -145,18 +146,13 @@ RUN cd /root/ \
     && cmake .. && make install
 
 #Pangolin
-# RUN apt update && \
-#     apt install -y libgl1-mesa-dev libwayland-dev libxkbcommon-dev wayland-protocols libegl1-mesa-dev \
-#     libc++-dev libglew-dev libeigen3-dev cmake libjpeg-dev libpng-dev libavcodec-dev libavutil-dev libavformat-dev libswscale-dev libavdevice-dev \
-#     libdc1394-22-dev libraw1394-dev libopenni-dev python3-distutils \
-#     && git clone https://github.com/stevenlovegrove/Pangolin.git \
-#     && cd Pangolin \
-#     && mkdir build && cd build \
-#     && cmake .. -DCMAKE_BUILD_TYPE=Release \
-#     && make -j 3 \
-#     && make install
-
-
+RUN git clone https://github.com/stevenlovegrove/Pangolin.git \
+    && cd Pangolin \
+    && mkdir build && cd build \
+    && cmake .. -DCMAKE_BUILD_TYPE=Release \
+    && make -j 3 \
+    && make install
+ 
 # Tools
 RUN apt update && \
     apt install -y vim tmux xterm lxterminal

@@ -122,11 +122,14 @@ DATASET_DIR=/.../data/Dataset
 -   ORB-SLAM3
     ORB-SLAM3 is released under GPLv3 license. For a list of all code/library dependencies (and associated licenses), please see [Dependencies.md](https://github.com/UZ-SLAMLab/ORB_SLAM3/blob/master/Dependencies.md).
 
--   SegNet_ROS
+- [Pangolin](https://github.com/stevenlovegrove/Pangolin.git) MIT License
+- [G2O](https://github.com/RainerKuemmerle/g2o.git)
+- [DBoW2](https://github.com/dorian3d/DBoW2.git)
+-   SegNet_ROS: 
     A ROS version of SegNet.  SegNet_ROS is released under GPLV3.
     We used [SegNet-Tutorial](https://github.com/alexgkendall/SegNet-Tutorial).
 
--   RDS-SLAM
+-   RDS-SLAM: 
     RDS-SLAM is released under GPLv3 license. The code/library dependencies is the same as ORB_SLAM3.
 
 # Discussion
